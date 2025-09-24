@@ -1,0 +1,24 @@
+<mat-toolbar>
+  <!-- <button matIconButton class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button> -->
+  <span *ngIf="auth.user$ | async as user">
+    Hello {{ user.nickname }}
+  </span>
+  <span class="example-spacer"></span>
+  <!-- <button matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>favorite</mat-icon>
+  </button> -->
+  <button matIconButton [matMenuTriggerFor]="beforeMenu" aria-label="Example icon-button with share icon">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-menu #beforeMenu="matMenu" xPosition="before">
+  <button mat-menu-item (click)=profile()>Profile</button>
+  <button mat-menu-item (click)="logout()">
+    Log out
+    </button>
+</mat-menu>
+
+<router-outlet></router-outlet>

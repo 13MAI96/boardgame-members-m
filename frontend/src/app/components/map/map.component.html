@@ -1,0 +1,63 @@
+<!-- <div class="container" #container>
+  <p>7 to 11 players</p>
+    <ol class="odd-3">
+        <li class="hex red">Red win!</li>
+        <li class="hex deep"></li>
+    </ol>
+    <ol class="odd-2">
+      <li class="hex red">Red win!</li>
+      <li class="hex deep"></li>
+      <li class="hex deep"></li>
+      <li class="hex">Cabin Search</li>
+    </ol>
+    <ol class="odd-1">
+      <li class="hex red">Red win!</li>
+      <li class="hex deep">Feed the Kraken</li>
+      <li class="hex deep">Flogging</li>
+      <li class="hex"></li>
+      <li class="hex">Cabin Search</li>
+      <li class="hex"></li>
+    </ol>
+    <ol class="odd-0">
+      <li class="hex yellow">Yellow win!</li>
+      <li class="hex deep">Feed the Kraken</li>
+      <li class="hex deep"></li>
+      <li class="hex">Off with the Tongue</li>
+      <li class="hex">Cabin Search</li>
+      <li class="hex"></li>
+      <li class="hex"></li>
+    </ol>
+    <ol class="odd-1">
+      <li class="hex blue">Blue win!</li>
+      <li class="hex deep">Feed the Kraken</li>
+      <li class="hex deep">Flogging</li>
+      <li class="hex"></li>
+      <li class="hex">Cabin Search</li>
+      <li class="hex"></li>
+    </ol>
+    <ol class="odd-2">
+      <li class="hex blue">Blue win!</li>
+      <li class="hex deep"></li>
+      <li class="hex deep"></li>
+      <li class="hex"></li>
+    </ol>
+    <ol class="odd-3">
+        <li class="hex blue">Blue win!</li>
+        <li class="hex deep"></li>
+    </ol>
+  </div> -->
+
+<div class="container" #container>
+  <p>7 to 11 players</p>
+  @for(column of game_map.columns; track column){
+    <ol [class]=getOddClass(column)>
+      @for(place of getReverse(column.places); track place){
+        <li [class]=getHexClass(place)>
+          <mat-icon *ngIf="place.actual; else text" > directions_boat</mat-icon>
+          <ng-template #text>{{getHexText(place)}}</ng-template>
+          
+        </li>        
+      }
+    </ol>
+  }
+</div>

@@ -1,0 +1,21 @@
+export const spanish = {
+    role: "Ingeniero de Software",
+    contact: "Contacto",
+    media: "Redes Sociales",
+    currently: "Actualmente",
+    month_0: "Enero",
+    month_1: "Febrero",
+    month_2: "Marzo",
+    month_3: "Abril",
+    month_4: "Mayo",
+    month_5: "Junio",
+    month_6: "Julio",
+    month_7: "Agosto",
+    month_8: "Septiembre",
+    month_9: "Octubre",
+    month_10: "Noviembre",
+    month_11: "Diciembre",
+    icbc_role: "Lider Tecnico Frontend",
+    moby_role: "Desarrollador Frontend",
+    tec_task_01: 'Design and develop customised applications, using modern front-end and back-end technologies, to meet the specific needs of our clients.'
+}

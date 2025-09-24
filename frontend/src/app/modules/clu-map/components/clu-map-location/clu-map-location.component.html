@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="form" *ngIf="auth.user$ | async as user">
+    <label for="first_name">Nombre: </label>
+    <!-- <input type="text" id="first_name" [(value)]="user.first_name" placeholder="Nombre"> -->
+     <h3 >{{ user.nickname }}</h3>
+    <label for="last_name">Email: </label>
+    <h3>{{ user.email }}</h3>
+    <!-- <input type="text" id="last_name" placeholder="Apellido" [(value)]="user.last_name"> -->
+    <!-- <label for="telegram_user">Telegram: </label> -->
+    <!-- <input type="text" id="telegram_user" placeholder="Telegram" [(value)]="user.telegram_user"> -->
+    <div class="location-container">
+      <div>
+        <label for="lon">Longitud: </label>
+        <input type="text" id="lon" placeholder="Longitud" [(value)]="userLocation.location.lng">
+      </div>
+      <div>
+        <label for="lat">Latitud: </label>
+        <input type="text" id="lat" placeholder="Latitud" [(value)]="userLocation.location.lat">
+      </div>
+    </div>
+    <button>Guardar</button>
+  </div>
+  
+  <mgl-map class="mapa"
+        [style]="'mapbox://styles/mapbox/streets-v12'"
+        [zoom]="[4]"
+        [center]="[-58.3816, -34.6037]"
+        (mapClick)="setLocation($event)"
+      >
+        <mgl-marker *ngIf="userLocation"
+                  [lngLat]="userLocation.location"
+                >
+                <div class="marcadores"></div>
+        </mgl-marker>
+        <mgl-control mglGeolocate></mgl-control>
+        <mgl-control mglNavigation></mgl-control>
+        <mgl-control position="top-left">
+          <div style="padding:4px; background-color: #c2c2c2;">
+            <div>Longitude:&nbsp;{{ coordinates()[0] }}</div>
+            <div>Latitude:&nbsp;{{ coordinates()[1] }}</div>
+          </div> 
+        </mgl-control>
+  </mgl-map>
+
+</div>
