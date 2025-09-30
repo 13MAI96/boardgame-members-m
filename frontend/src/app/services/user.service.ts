@@ -27,6 +27,7 @@ export class UserService {
   }
 
   private getUserData(){
+    
     this.http.get<User>(`${this.apiUrl}/user?id=${this.userData.value.sub}`).subscribe( userApi => {
         this.userData.next(this.userData.value?.updateFromApi(userApi))
     })
