@@ -1,0 +1,8 @@
+services:
+  backend:
+    build: ./
+    restart: always
+    tty: true
+    ports:
+      - 3000:3000
+    container_name: nest_api
