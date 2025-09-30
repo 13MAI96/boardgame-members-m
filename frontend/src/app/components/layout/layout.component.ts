@@ -8,6 +8,8 @@ import { Router, RouterOutlet } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu'
 import { AuthService } from '@auth0/auth0-angular';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
+import { FullUser, User } from '../../models/user';
 
 @Component({
     selector: 'app-layout',
@@ -19,11 +21,14 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 export class LayoutComponent {
   public isSmallScreen: boolean = true;
   public isLandscapeScreen: boolean = false;
+  private user!: FullUser;
+
   constructor(
     @Inject(DOCUMENT) public document: Document,
     private screenService: ScreenService,
-    public auth: AuthService,
-    private router: Router
+    private auth: AuthService,
+    private router: Router,
+    public userService: UserService
   ) {}
 
   ngOnInit() {
@@ -41,9 +46,7 @@ export class LayoutComponent {
       }
     })
 
-    this.auth.user$.subscribe(user => {
-      console.log(user)
-    })
+    this.userService.userData.subscribe(x => x ? this.user = x : false)
   }
 
   logout(){
@@ -57,5 +60,9 @@ export class LayoutComponent {
 
   profile(){
     this.router.navigate(['layout/user'])
+  }
+
+  goToMap(){
+    this.router.navigate(['layout'])
   }
 }

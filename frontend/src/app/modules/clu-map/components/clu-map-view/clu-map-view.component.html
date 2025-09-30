@@ -1,21 +1,31 @@
-<h2>
-    Mapa del Clú
-</h2>
-
-
-<mgl-map class="mapa" 
-    [style]="'mapbox://styles/mapbox/streets-v12'" [zoom]="9" [center]="{ lat: -34.6037, lng: -58.3816 }"> 
-  <mgl-control mglNavigation />
-  <mgl-control mglGeolocate />
-    <mgl-marker *ngFor="let user of users"
-                [lngLat]="user.location"
-              >
-              <div (click)="openMarkerPopUp(user)" class="marcadores">{{user.marker_label}}</div>
-    </mgl-marker>
-    <mgl-popup *ngIf="selected"
-             [lngLat]="selected.location"
-             (close)="closeMarkerPopUp()">
-        <h3>{{ selected.first_name }}</h3>
-        <p>Telegram: {{ selected.telegram_user }}</p>
-    </mgl-popup>
-</mgl-map>
+<span class="user-alert">{{getUserAlert()}}</span>
+@if(userService.userData | async; as user){
+  <mgl-map class="mapa" 
+      [style]="'mapbox://styles/mapbox/streets-v12'" [zoom]="9" [center]="{ lat: user.lat ?? 0, lng: user.lng ?? 0 }"> 
+    <mgl-control mglNavigation />
+    <mgl-control mglGeolocate />
+      @for(user of userService.users | async; track user){
+        <mgl-marker
+                    [lngLat]="[user.lng ?? 0, user.lat ?? 0]"
+                  >
+                  <div 
+                    (click)="openMarkerPopUp(user)" class="marcadores">{{user.name?.charAt(0) ?? ''}}</div>
+                  <!-- <div
+                    
+                    (keydown.enter)="openMarkerPopUp(user)"
+                    tabindex="0"
+                    class="marker"
+                    style="background-image: url(user.picture);"
+                  ></div> -->
+        </mgl-marker>
+      }
+      @if(selected){
+        <mgl-popup
+                 [lngLat]="[selected.lng ?? 0, selected.lat ?? 0]"
+                 (close)="closeMarkerPopUp()">
+            <h3>{{ selected.name }}</h3>
+            <p>Telegram: {{ selected.telegram_user }}</p>
+        </mgl-popup>
+      }
+  </mgl-map>
+}

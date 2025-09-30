@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, DOCUMENT, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -11,7 +11,6 @@ import { AuthService } from '@auth0/auth0-angular';
   standalone: true,
   imports: [
     MatButtonModule,
-    AsyncPipe,
     CommonModule
   ]
 })
