@@ -1,5 +1,5 @@
 export const environment = {
-    api_url: "://localhost:3000",
+    api_url: "//skilled-matelda-13mai96-0-cb6360ba.koyeb.app/",
     http_protocol: "https",
     ws_protocol: "wss",
     auth_domain: "dev-gcxngey7xpwudoij.us.auth0.com",
