@@ -83,6 +83,7 @@ export class CluMapLocationComponent{
     }
 
     setLocation(e: MapMouseEvent){
+      console.log(e)
       this.coordinates.set(e.lngLat.toArray())
       this.form.controls['lng'].setValue(e.lngLat.lng);
       this.form.controls['lat'].setValue(e.lngLat.lat);
