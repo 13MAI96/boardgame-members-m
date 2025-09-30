@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideMapboxGL } from 'ngx-mapbox-gl';
 import { authInterceptor } from './interceptors/auth.interceptors';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,10 +15,10 @@ export const appConfig: ApplicationConfig = {
     }),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAuth0({
-      domain: 'dev-gcxngey7xpwudoij.us.auth0.com',
-      clientId: 'dw9JWdxh9AP0XiN5p4tBrbKOD2mJbNj4',
+      domain: environment.auth_domain,
+      clientId: environment.auth_client_id,
       authorizationParams: {
-        audience: 'https://dev-gcxngey7xpwudoij.us.auth0.com/api/v2/',
+        audience: environment.auth_audience,
         redirect_uri: window.location.origin,
         prompt: 'login'
       }
