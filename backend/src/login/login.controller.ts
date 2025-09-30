@@ -27,7 +27,6 @@ export class LoginController {
   // @UseGuards(AuthGuard('jwt'))
   @Get("session")
   async validateSession(@Req() req: express.Request, @Res() res: express.Response) {
-    console.log(req.headers.session)
     const result = this.loginService.validateSession(req.headers.session as string ?? '');
   
     res.status(HttpStatus.OK).json({valid: true}).send()

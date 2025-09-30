@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, signal, ChangeDetectionStrategy } from '@angular/core';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MapComponent,
   MarkerComponent,
   ControlComponent,
@@ -7,8 +7,7 @@ import { MapComponent,
   GeolocateControlDirective
 } from 'ngx-mapbox-gl';
 import { MapMouseEvent } from 'mapbox-gl';
-import { AuthService, User as AuthUser } from '@auth0/auth0-angular';
-import { FullUser, User } from '../../../../models/user';
+import { FullUser } from '../../../../models/user';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
@@ -54,7 +53,6 @@ export class CluMapLocationComponent{
       lat: new FormControl('', [Validators.required, Validators.min(-90), Validators.max(90)])
     })
     this.userService.userData.subscribe(x =>{
-      console.log(x)
       this.user = x ;
       this.form.controls['_id'].setValue(x._id);
       this.form.controls['sub'].setValue(x.sub);
@@ -83,7 +81,6 @@ export class CluMapLocationComponent{
     }
 
     setLocation(e: MapMouseEvent){
-      console.log(e)
       this.coordinates.set(e.lngLat.toArray())
       this.form.controls['lng'].setValue(e.lngLat.lng);
       this.form.controls['lat'].setValue(e.lngLat.lat);

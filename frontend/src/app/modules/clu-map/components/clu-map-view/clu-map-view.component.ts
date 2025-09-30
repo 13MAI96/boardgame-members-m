@@ -34,7 +34,6 @@ export class CluMapViewComponent{
       public userService: UserService
     ){
       userService.userData.subscribe(x => {
-        console.log(x.updatedAt)
         if(x._id){
           this.userService.getUsersList()
         } else {

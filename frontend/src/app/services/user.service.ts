@@ -27,14 +27,13 @@ export class UserService {
   }
 
   private getUserData(){
-    
+
     this.http.get<User>(`${this.apiUrl}/user?id=${this.userData.value.sub}`).subscribe( userApi => {
         this.userData.next(this.userData.value?.updateFromApi(userApi))
     })
   }
 
   public createUser(new_user: User){
-    console.log(new_user)
     this.http.post<User>(`${this.apiUrl}/user`, new_user).subscribe(userApi => {
       this.userData.next(this.userData.value?.updateFromApi(userApi))
     })

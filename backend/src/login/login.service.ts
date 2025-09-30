@@ -25,7 +25,6 @@ export class LoginService{
     const result = this.users.find(x => {
         return user.user == x.user && user.password == x.password
     })
-    console.log("login", result)
     if(result){ 
         return {token: "a", user: result.user}
     }
