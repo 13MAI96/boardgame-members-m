@@ -3,13 +3,13 @@ import { AuthService, User as AuthUser } from '@auth0/auth0-angular';
 import { BehaviorSubject } from 'rxjs';
 import { FullUser, User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
-import { Environment } from '../../environment/dev.environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-    private apiUrl = Environment.http_protocol + Environment.api_url
+    private apiUrl = environment.http_protocol + environment.api_url
     public userData: BehaviorSubject<FullUser>;
     public users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
 
