@@ -1,6 +1,6 @@
-### El *** del Boardgame
+# El *** del Boardgame
 ## Practica y prototipo de nuevo mapa de miembros
-# Perfiles de usuarios:
+### Perfiles de usuarios:
     Jugadores
     Cafe/Bar (Jugar sin costo)
     Tienda (Venta y/o jugar con costo)
