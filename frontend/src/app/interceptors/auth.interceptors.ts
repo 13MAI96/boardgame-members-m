@@ -36,7 +36,9 @@ export const authInterceptor: HttpInterceptorFn = (
             if(event instanceof HttpResponse){
               const body: BackendActionResponse = event.body as BackendActionResponse;
               if(body?.action == 'incomplete_data'){
-                router.navigate(['layout/user'])
+                router.navigate([`layout/user`], {
+                  queryParams: { token: body.message }
+                })
               }
             }
           }) 

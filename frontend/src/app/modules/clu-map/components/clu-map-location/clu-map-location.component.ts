@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent,
   MarkerComponent,
@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-clu-map',
@@ -35,8 +36,10 @@ import { UserService } from '../../../../services/user.service';
   styleUrl: './clu-map-location.component.scss'
 })
 export class CluMapLocationComponent{
+  private route = inject(ActivatedRoute);
   private user!: FullUser;
   public roleOptions: string[] = ["Player", "Shop", "Cafe", "Influencer"]
+  public first_update_token: string | undefined
 
   public form!: FormGroup;
   constructor(
@@ -63,7 +66,10 @@ export class CluMapLocationComponent{
       this.form.controls['lng'].setValue(x.lng);
       this.form.controls['lat'].setValue(x.lat);
     })
-    
+    this.route.queryParams.subscribe(params => {
+      this.first_update_token = params['token'];
+      if(!this.first_update_token) this.form.controls['role'].disable()
+    });
   }
 
     zoom = 12;
@@ -93,10 +99,10 @@ export class CluMapLocationComponent{
 
   public updateUser(){
     if(this.form.invalid) return
-    if(this.user._id && this.user._id.length > 1){
-      this.userService.updateUser(this.form.getRawValue())
+    if(this.first_update_token){
+      this.userService.createUser(this.first_update_token, this.form.getRawValue())
     } else {
-      this.userService.createUser(this.form.getRawValue())
+      this.userService.updateUser(this.form.getRawValue())
     }
   }
   

@@ -4,12 +4,14 @@ import { Model } from "mongoose";
 import { User } from "src/schemas/user.schema";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { TokenService } from "src/token/token.service";
 
 
 @Injectable()
 export class UserService{
     constructor(
-        @InjectModel(User.name) private userModel: Model<User>
+        @InjectModel(User.name) private userModel: Model<User>,
+        private readonly tokenService: TokenService
     ) {}
   
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -19,7 +21,7 @@ export class UserService{
         return createdUser.save();
     }
 
-    async update(id: string, updateUserDto: CreateUserDto){
+    async update(id: string, updateUserDto: UpdateUserDto){
         const updatedUser = await this.userModel.findByIdAndUpdate(
             id,
             {$set: updateUserDto},
@@ -49,7 +51,18 @@ export class UserService{
     async findOne(id: string): Promise<User | null>{
         return this.userModel.where({sub: id}).findOne().exec();
     }
+
+    async generateFormUrlForUser(userId: string): Promise<string> {
+      const token = await this.tokenService.generateTokenForUser(userId);
+    
+      // URL del formulario en tu frontend (p.ej., Vite/Next)
+      const FRONTEND_URL = process.env.FRONTEND_URL ?? 'https://frontend.com';
+      const formUrl = `${FRONTEND_URL}/form?token=${token}`;
+    
+      return formUrl;
+    }
 }
+
 
 
 

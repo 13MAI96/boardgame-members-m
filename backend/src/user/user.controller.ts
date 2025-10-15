@@ -4,12 +4,15 @@ import express from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { TokenService } from 'src/token/token.service';
 
 @Controller('user')
 export class UserController {
 
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private tokenService: TokenService
     ) {}
 
 
@@ -20,15 +23,18 @@ export class UserController {
     if(user){
         res.status(HttpStatus.OK).json(user)
     } else {
-        res.status(HttpStatus.OK).json({action: 'incomplete_data'})
+        const token = await this.tokenService.generateTokenForUser(id)
+        res.status(HttpStatus.OK).json({action: 'incomplete_data', message: token})
     }
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @Bind(Body())
-  async createUser(createUserDto: UpdateUserDto, @Res() res: express.Response) {
-    const {_id, ...data} = createUserDto;  
+  async createUser(createUserDto: CreateUserDto, @Query('token') token: string, @Res() res: express.Response) {
+    console.log(token)
+    await this.tokenService.validateAndUseToken(token)
+    const {...data} = createUserDto;  
     const user = await this.userService.create(data)
     if(user){
         res.status(HttpStatus.OK).json(user)
@@ -40,9 +46,9 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Put()
   @Bind(Body())
-  async updateUser(createUserDto: UpdateUserDto, @Res() res: express.Response) {
-    const {_id, ...data} = createUserDto;  
-    const user = await this.userService.update(_id, data)
+  async updateUser(@Query('id') id: string, createUserDto: UpdateUserDto, @Res() res: express.Response) {
+    const { ...data} = createUserDto;  
+    const user = await this.userService.update(id, data)
     if(user){
         res.status(HttpStatus.OK).json(user)
     } else {

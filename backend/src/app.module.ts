@@ -13,7 +13,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
     AuthModule,
-    UserModule, 
+    UserModule,
     MongooseModule.forRoot(process.env.MONGO ?? ''),
   ],
   controllers: [

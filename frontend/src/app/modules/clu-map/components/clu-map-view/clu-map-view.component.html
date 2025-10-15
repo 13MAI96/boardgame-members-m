@@ -1,23 +1,25 @@
 <span class="user-alert">{{getUserAlert()}}</span>
 @if(userService.userData | async; as user){
-  <mgl-map class="mapa" 
+  <mgl-map class="mapa" #mapa
       [style]="'mapbox://styles/mapbox/streets-v12'" [zoom]="9" [center]="{ lat: user.lat ?? 0, lng: user.lng ?? 0 }"> 
     <mgl-control mglNavigation />
     <mgl-control mglGeolocate />
       @for(user of userService.users | async; track user){
-        <mgl-marker
-                    [lngLat]="[user.lng ?? 0, user.lat ?? 0]"
-                  >
-                  <div 
-                    (click)="openMarkerPopUp(user)" class="marcadores">{{user.name?.charAt(0) ?? ''}}</div>
-                  <!-- <div
-                    
-                    (keydown.enter)="openMarkerPopUp(user)"
-                    tabindex="0"
-                    class="marker"
-                    style="background-image: url(user.picture);"
-                  ></div> -->
-        </mgl-marker>
+        @if(mapa){
+          <mgl-marker
+                      [lngLat]="[user.lng ?? 0, user.lat ?? 0]"
+                    >
+                    <div 
+                      (click)="openMarkerPopUp(user)" [class]="'marcadores ' + user.role?.toLowerCase()">{{user.name?.charAt(0) ?? ''}}</div>
+                    <!-- <div
+                      
+                      (keydown.enter)="openMarkerPopUp(user)"
+                      tabindex="0"
+                      class="marker"
+                      style="background-image: url(user.picture);"
+                    ></div> -->
+          </mgl-marker>
+        }
       }
       @if(selected){
         <mgl-popup

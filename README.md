@@ -18,6 +18,7 @@
         Puede ver jugadores?
         Puede organizar eventos gratuitos sin costo
         Puede organizar eventos pagos con costo
+        Definir rol a mostrar para este tipo de usuario
 
     Tienda:
         Puede ver otras tiendas
@@ -31,7 +32,7 @@
         Puede organizar eventos con costo
 
 Todos los perfiles:
-    Pueden actualizar su ubicacion. (Se actualizara para el publico 48hs despues)
+    Pueden actualizar su ubicacion. (Se actualizara para el publico ¿inmediatamente? y podrá ver jugadores y/o influencer 12hs despues)
 
 
 Jugadores, cafe e influencer:
@@ -40,8 +41,8 @@ Jugadores, cafe e influencer:
 
 
 Jugadores seran vistos en el mapa con el icono verde (club)
-Cafe seran vistos con un icono ____
-Tiendas seran vistos con un icono ____, cuando active ofertas cambiara a color ____.
+Cafe seran vistos con un icono violeta
+Tiendas seran vistos con un icono rojo, cuando active ofertas cambiara a color ____.
 Influencers seran vistos con icono azul
 Eventos seran vistos con un icono ____, reemplazaran temporalmente el icono del lugar donde se realice y del organizador. Aun mostraran detalles con un tooltip.
 
@@ -49,3 +50,5 @@ El tipo de usuario y la ubicacion seran guardados en base de datos Mongo en un s
 
 
 Eventos, ofertas y subastas seran implementados en una segunda iteracion del sistema.
+
+El tipo de usuario no se podrá cambiar desde el sistema despues de la primera configuracion. 

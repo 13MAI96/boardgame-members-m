@@ -33,8 +33,8 @@ export class UserService {
     })
   }
 
-  public createUser(new_user: User){
-    this.http.post<User>(`${this.apiUrl}/user`, new_user).subscribe(userApi => {
+  public createUser(token: string, new_user: User){
+    this.http.post<User>(`${this.apiUrl}/user?token=${token}`, new_user).subscribe(userApi => {
       this.userData.next(this.userData.value?.updateFromApi(userApi))
     })
   }
