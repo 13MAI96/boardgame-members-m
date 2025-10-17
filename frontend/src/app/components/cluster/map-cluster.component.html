@@ -1,0 +1,15 @@
+<svg
+      [attr.width]="width"
+      [attr.height]="width"
+      [attr.viewbox]="viewbox"
+      text-anchor="middle"
+      [ngStyle]="{ font: font }"
+    >
+      @for (segment of segments; track segment) {
+        <path [attr.d]="segment.d" [ngStyle]="{ fill: segment.fill }" />
+      }
+      <circle [attr.cx]="radio" [attr.cy]="radio" [attr.r]="inside_radio" fill="white" />
+      <text dominant-baseline="central" [attr.transform]="textTransform">
+        {{ totalString }}
+      </text>
+</svg>

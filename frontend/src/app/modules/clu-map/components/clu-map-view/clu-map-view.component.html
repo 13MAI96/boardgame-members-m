@@ -1,10 +1,13 @@
 <span class="user-alert">{{getUserAlert()}}</span>
 @if(userService.userData | async; as user){
+  <!-- 
   <mgl-map class="mapa" #mapa
       [style]="'mapbox://styles/mapbox/streets-v12'" [zoom]="9" [center]="{ lat: user.lat ?? 0, lng: user.lng ?? 0 }"> 
     <mgl-control mglNavigation />
     <mgl-control mglGeolocate />
-      @for(user of userService.users | async; track user){
+    
+
+      <!-- @for(user of userService.users | async; track user){
         @if(mapa){
           <mgl-marker
                       [lngLat]="[user.lng ?? 0, user.lat ?? 0]"
@@ -18,7 +21,7 @@
                       class="marker"
                       style="background-image: url(user.picture);"
                     ></div> -->
-          </mgl-marker>
+          <!-- </mgl-marker>
         }
       }
       @if(selected){
@@ -30,4 +33,49 @@
         </mgl-popup>
       }
   </mgl-map>
-}
+  -->
+  
+  
+  
+  <mgl-map
+  class="mapa"
+  [style]="'mapbox://styles/mapbox/streets-v12'"
+  [zoom]="[3]"
+  [center]="{ lat: user.lat ?? 0, lng: user.lng ?? 0 }"
+  >
+  <mgl-control mglNavigation />
+  <mgl-control mglGeolocate />
+  <!-- @let _players = players(); -->
+ 
+  <ng-container *ngIf="location | async as locationJson">
+    <mgl-geojson-source
+    id="players"
+    [data]="locationJson"
+    [cluster]="true"
+          [clusterMaxZoom]="14"
+          [clusterRadius]="50"
+        />
+          <mgl-markers-for-clusters source="players">
+          <ng-template mglClusterPoint let-feature>
+            <showcase-cluster-point [properties]="feature.properties" />
+          </ng-template>
+        </mgl-markers-for-clusters>
+          
+          <mgl-layer
+          id="earthquake_circle"
+          type="circle"
+          source="players"
+          [filter]="['!=', 'cluster', true]"
+          [paint]="circlePaint"
+        />
+            <mgl-layer
+          id="earthquake_label"
+          type="symbol"
+          source="players"
+          [filter]="['!=', 'cluster', true]"
+          [layout]="labelLayout"
+          [paint]="labelPaint"
+        />
+        </ng-container>
+  </mgl-map>
+} 
