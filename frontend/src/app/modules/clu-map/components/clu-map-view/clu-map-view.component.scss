@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: center;
   color: white;
+  cursor: pointer;
 }
 .marcadores.shop{
   background-color: #be5252cc;
@@ -29,18 +30,66 @@
   border: 2px solid #527dbe;
 }
 
-.marker {
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  background-position: center;
-  background-size: contain;
+.left-control{
+  width: 120px;
+  background-color: #c2c2c2;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.color-reference{
+  list-style: none;
+  padding: 0;
+  li{
+    display: flex;
+    .reference-circle{
+      margin: 0 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+    }
+    .player{
+      background-color: #52be7a;
+    }
+    .shop{
+      background-color: #be5252;
+    }
+    .cafe{
+      background-color: #b14ac5;
+    }
+    .influencer{
+      background-color: #527dbe;
+    }
+  }
+}
+
 
 .user-alert{
   padding: 0.5rem;
   color: red;
+}
+
+.popup{
+  border-radius: 5px;
+}
+
+.marcadores.shop.event{
+  // animation: pulse 1s infinite ease-in-out alternate;
+  animation: hithere 1s ease infinite;
+}
+
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+@keyframes hithere {
+  30% { transform: scale(1.2); }
+  40%, 60% { transform: rotate(-20deg) scale(1.2); }
+  50% { transform: rotate(20deg) scale(1.2); }
+  70% { transform: rotate(0deg) scale(1.2); }
+  100% { transform: scale(1); }
 }

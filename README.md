@@ -7,28 +7,28 @@
     Influencer (Publicidad, redes sociales, organizacion de eventos)
 
     Jugadores:
-        Pueden ver otros jugadores
-        Pueden ver cafes y tiendas
-        Pueden ver influencer con ubicacion abierta
+        Pueden ver otros jugadores.
+        Pueden ver cafes y tiendas.
+        Pueden ver influencer con ubicacion abierta.
         Puede organizar eventos gratuitos y/o pagos (ver reglas)
+        Pueden ser vistos por Jugadores e Influencers que muestren su ubicacion.
 
     Cafe/Bar:
-        Puede ver tiendas
-        Puede ver otros cafes
+        Puede ver tiendas, cafes e influencer con la ubicacion habilitada
         Puede ver jugadores?
         Puede organizar eventos gratuitos sin costo
         Puede organizar eventos pagos con costo
         Definir rol a mostrar para este tipo de usuario
 
     Tienda:
-        Puede ver otras tiendas
-        Puede ver cafes
+        Puede ver otras tiendas, cafes e influencer con la ubicacion habilitada.
         Puede organizar eventos gratuitos con costo
         Puede organizar eventos pagos, con costo
         Puede activar ofertas, costo?
 
     Influencer:
-        Puede ver tiendas y cafes
+        Si tiene ubicacion abierta puede ver lo mismo que ve un jugador.
+        Si no tiene la ubicacion abierta puede ver lo mismo que una tienda
         Puede organizar eventos con costo
 
 Todos los perfiles:
