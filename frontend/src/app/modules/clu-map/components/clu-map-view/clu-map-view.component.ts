@@ -1,14 +1,17 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent,
   MarkerComponent,
   PopupComponent,
   ControlComponent,
   NavigationControlDirective,
-  GeolocateControlDirective
+  GeolocateControlDirective,
+  GeoJSONSourceComponent,
+  LayerComponent,
 } from 'ngx-mapbox-gl';
 import { User } from '../../../../models/user';
 import { UserService } from '../../../../services/user.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-clu-map',
@@ -20,15 +23,19 @@ import { UserService } from '../../../../services/user.service';
     PopupComponent,
     ControlComponent,
     NavigationControlDirective,
-    GeolocateControlDirective
+    GeolocateControlDirective,
+    GeoJSONSourceComponent,
+    LayerComponent,
 ],
   templateUrl: './clu-map-view.component.html',
   styleUrl: './clu-map-view.component.scss'
 })
 export class CluMapViewComponent{
+  @ViewChild(MapComponent) map!: MapComponent;
 
     public selected: User | null = null;
-    public loading: boolean = false;
+    public users_location: BehaviorSubject<GeoJSON.FeatureCollection<GeoJSON.Point, { role: string, name: string }> | null> = new BehaviorSubject< GeoJSON.FeatureCollection<GeoJSON.Point, { role: string, name: string }> | null>(null) 
+    public showMarkers = false;
     
     constructor(
       public userService: UserService
@@ -40,39 +47,33 @@ export class CluMapViewComponent{
 
         }
       })
+      userService.users.subscribe(x => {
+        const features: GeoJSON.Feature<GeoJSON.Point, { role: string, name: string }>[] = x.map( user => {
+          return {
+            type: 'Feature',
+            geometry: {type: 'Point', coordinates: [user.lng ?? 0, user.lat ?? 0]},
+            properties: { role: user.role ?? 'Player', name: user.name ?? '' }
+          }
+        })
+        this.users_location.next({type: 'FeatureCollection', features})
+      })
     }
 
 
   public openMarkerPopUp(marker: User){
     this.selected = null
     setTimeout(() => {this.selected = marker}, 1)
-    
   }
 
   public closeMarkerPopUp(){
     this.selected = null
   }
 
-  public getStyleString(userPicture: string | undefined): string{
-    const styleString = `background-image: url(${userPicture});`
-    return styleString;
-  }
-
-  public getUserAlert(){
-    const user = this.userService.userData.value;
-    const ahora: Date = new Date();
-    if(user.updatedAt){
-      const diffMs: number = ahora.getTime() - new Date(user.updatedAt).getTime();
-      const diffHoras = diffMs / (1000 * 60 * 60);
-      if(diffHoras < 12){
-        return "Podras ver la ubicacion de otros usuarios despues de 12hs de la ultima actualizacion de perfil."
-      } else {
-        return ""
+  onZoomChange() {
+    const zoom = this.map.mapInstance?.getZoom();
+      if (zoom !== undefined) {
+        this.showMarkers = zoom > 13;
       }
-    }
-
-    return ""
   }
-  
 }
 

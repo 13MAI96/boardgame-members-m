@@ -4,14 +4,12 @@ import { Model } from "mongoose";
 import { User } from "src/schemas/user.schema";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { TokenService } from "src/token/token.service";
 
 
 @Injectable()
 export class UserService{
     constructor(
         @InjectModel(User.name) private userModel: Model<User>,
-        private readonly tokenService: TokenService
     ) {}
   
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -37,30 +35,28 @@ export class UserService{
       const user = await this.userModel.findById(id);
         if (!user || !user.updatedAt) throw new NotFoundException('User not found');
         const ahora = new Date();
-        const horasDesdeUpdate = (ahora.getTime() - user.updatedAt.getTime()) / (1000 * 60 * 60);
+        const horas_desde_update = (ahora.getTime() - user.updatedAt.getTime()) / (1000 * 60 * 60);
 
-        if(user.role === 'Shop'){
-            throw new ForbiddenException('Momentaneamente las ubicaciones no estan disponibles para tu rol actual');
+        if (horas_desde_update < 12) {
+            throw new ForbiddenException('No puedes acceder a la lista de usuarios hasta que hayan pasado 12 horas desde la última actualización de tu perfil.');
+        } 
+        if(user.role === 'Player'){
+            return this.userModel.find({$or: [{has_location_opened: 'true'}, {role: {$ne: 'Influencer'}}]}).exec();
+        } else if(user.role === 'Influencer' && user.has_location_opened){
+            return this.userModel.find().exec();
+        } else if(user.role !== 'Player'){
+            return this.userModel.where({ $or: [
+                {role: 'Cafe'}, {role: 'Shop'}, {$and: [{role: 'Influencer'}, {has_location_opened: true}]}
+            ]}).find().exec();
+        } else {
+            throw new ForbiddenException('No estas autorizado a ver la lista de usuarios.')
         }
-        else if (horasDesdeUpdate < 12) {
-            throw new ForbiddenException('No puedes acceder a la lista de usuarios hasta que hayan pasado 12 horas desde la última actualización de tu perfil');
-        }  
-      return this.userModel.find().exec();
     }
 
     async findOne(id: string): Promise<User | null>{
         return this.userModel.where({sub: id}).findOne().exec();
     }
 
-    async generateFormUrlForUser(userId: string): Promise<string> {
-      const token = await this.tokenService.generateTokenForUser(userId);
-    
-      // URL del formulario en tu frontend (p.ej., Vite/Next)
-      const FRONTEND_URL = process.env.FRONTEND_URL ?? 'https://frontend.com';
-      const formUrl = `${FRONTEND_URL}/form?token=${token}`;
-    
-      return formUrl;
-    }
 }
 
 

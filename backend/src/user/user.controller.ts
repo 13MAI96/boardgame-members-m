@@ -45,10 +45,9 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put()
-  @Bind(Body())
-  async updateUser(@Query('id') id: string, createUserDto: UpdateUserDto, @Res() res: express.Response) {
-    const { ...data} = createUserDto;  
-    const user = await this.userService.update(id, data)
+  async updateUser(@Body() createUserDto: UpdateUserDto, @Query('id') id: string, @Res() res: express.Response) {
+    console.log(id, createUserDto)
+    const user = await this.userService.update(id, createUserDto)
     if(user){
         res.status(HttpStatus.OK).json(user)
     } else {

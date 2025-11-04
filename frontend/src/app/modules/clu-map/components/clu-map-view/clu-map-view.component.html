@@ -1,33 +1,90 @@
-<span class="user-alert">{{getUserAlert()}}</span>
+@if(userService.list_error_message | async; as error_message) {
+  <span class="user-alert">{{error_message}}</span>
+}
 @if(userService.userData | async; as user){
   <mgl-map class="mapa" #mapa
+  (zoomEnd)="onZoomChange()"
       [style]="'mapbox://styles/mapbox/streets-v12'" [zoom]="9" [center]="{ lat: user.lat ?? 0, lng: user.lng ?? 0 }"> 
     <mgl-control mglNavigation />
     <mgl-control mglGeolocate />
+    <mgl-control position="top-left">
+      <div class="left-control">
+        <ul class="color-reference">
+          <li><div class="reference-circle player"></div><p>Jugadores</p></li>
+          <li><div class="reference-circle shop"></div><p>Tiendas</p></li>
+          <li><div class="reference-circle cafe"></div><p>Cafes</p></li>
+          <li><div class="reference-circle influencer"></div><p>Influencers</p></li>
+        </ul>
+      </div>
+    </mgl-control>
       @for(user of userService.users | async; track user){
-        @if(mapa){
+        @if(mapa && showMarkers){
           <mgl-marker
                       [lngLat]="[user.lng ?? 0, user.lat ?? 0]"
                     >
                     <div 
                       (click)="openMarkerPopUp(user)" [class]="'marcadores ' + user.role?.toLowerCase()">{{user.name?.charAt(0) ?? ''}}</div>
-                    <!-- <div
-                      
-                      (keydown.enter)="openMarkerPopUp(user)"
-                      tabindex="0"
-                      class="marker"
-                      style="background-image: url(user.picture);"
-                    ></div> -->
           </mgl-marker>
         }
       }
       @if(selected){
         <mgl-popup
+                  className="popup"
                  [lngLat]="[selected.lng ?? 0, selected.lat ?? 0]"
                  (close)="closeMarkerPopUp()">
             <h3>{{ selected.name }}</h3>
             <p>Telegram: {{ selected.telegram_user }}</p>
         </mgl-popup>
+      }
+      @if(users_location | async; as locations){
+        <mgl-geojson-source
+    id="users"
+    [data]="locations"
+    [cluster]="true"
+    [clusterRadius]="50"
+    [clusterMaxZoom]="12"  
+  />
+         <mgl-layer
+          id="cluster-count_circle"
+          type="circle"
+          source="users"
+          [filter]="['has', 'point_count']"
+          [paint]="{
+            'circle-color': '#ccc',
+            'circle-radius': 20
+          }"
+        />
+         <mgl-layer
+          id="cluster-count"
+          type="symbol"
+          source="users"
+          [filter]="['has', 'point_count']"
+          [layout]="{
+            'text-field': '{point_count_abbreviated}',
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 16,
+          }"
+        />
+          @if(!showMarkers){
+            <mgl-layer
+              id="unclustered-point"
+              type="circle"
+              source="users"
+              [filter]="['!has', 'point_count']"
+              [paint]="{
+                'circle-color': [
+                  'match',
+                  ['get', 'role'],
+                  'Player', '#52be7a',
+                  'Influencer', '#527dbe',
+                  'Shop', '#be5252',
+                  'Cafe', '#b14ac5',
+                  '#ccc'
+                ],
+                'circle-radius': 12
+              }"
+            />
+          }
       }
   </mgl-map>
 }

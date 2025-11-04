@@ -23,6 +23,9 @@ export class User {
   @Prop({ required: true})
   telegram_user: string
 
+  @Prop({default: false, required: false})
+  has_location_opened: boolean
+
   createdAt?: Date;
   updatedAt?: Date;
 
