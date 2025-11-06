@@ -7,12 +7,12 @@ import { MapComponent,
   GeolocateControlDirective
 } from 'ngx-mapbox-gl';
 import { MapMouseEvent } from 'mapbox-gl';
-import { FullUser } from '../../../../models/user';
+import { FullUser } from '../../../../models/user/user';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../../../services/user.service';
+import { UserService } from '@/app/services/user/user.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -42,9 +42,11 @@ export class CluMapLocationComponent{
   public first_update_token: string | undefined
 
   public form!: FormGroup;
-  constructor(
-    public userService: UserService
-  ){
+  public zoom = 12;
+  public userService: UserService = inject(UserService)
+
+
+  constructor(){
     this.form = new FormGroup({
       _id: new FormControl(''),
       sub: new FormControl(''),
@@ -55,7 +57,7 @@ export class CluMapLocationComponent{
       lng: new FormControl('', [Validators.required, Validators.min(-200), Validators.max(200)]),
       lat: new FormControl('', [Validators.required, Validators.min(-90), Validators.max(90)])
     })
-    this.userService.userData.subscribe(x =>{
+    this.userService.userData$.subscribe(x =>{
       this.user = x ;
       this.form.controls['_id'].setValue(x._id);
       this.form.controls['sub'].setValue(x.sub);
@@ -72,9 +74,6 @@ export class CluMapLocationComponent{
     });
   }
 
-    zoom = 12;
-
-
     coordinates = signal<[number, number]>([0, 0]);
     layerPaint = signal({
       'circle-radius': 10,
@@ -82,11 +81,8 @@ export class CluMapLocationComponent{
     });
 
 
-    changeColor(color: string) {
-      this.layerPaint.set({ ...this.layerPaint(), 'circle-color': color });
-    }
-
-    setLocation(e: MapMouseEvent){
+    public setLocation(e: MapMouseEvent){
+      console.log(e, MapMouseEvent)
       this.coordinates.set(e.lngLat.toArray())
       this.form.controls['lng'].setValue(e.lngLat.lng);
       this.form.controls['lat'].setValue(e.lngLat.lat);

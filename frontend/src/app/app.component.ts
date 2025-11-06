@@ -10,9 +10,7 @@ import { RouterOutlet } from '@angular/router';
     styleUrl: './app.component.scss',
     
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   title = 'Boardgame Members';
-
-  ngOnInit(): void {}
   
 }

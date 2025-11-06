@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent,
   MarkerComponent,
@@ -7,8 +7,8 @@ import { MapComponent,
   NavigationControlDirective,
   GeolocateControlDirective
 } from 'ngx-mapbox-gl';
-import { User } from '../../../../models/user';
-import { UserService } from '../../../../services/user.service';
+import { User } from '@/app/models/user/user';
+import { UserService } from '@/app/services/user/user.service';
 
 @Component({
   selector: 'app-clu-map',
@@ -29,11 +29,10 @@ export class CluMapViewComponent{
 
     public selected: User | null = null;
     public loading: boolean = false;
+    public userService: UserService = inject(UserService)
     
-    constructor(
-      public userService: UserService
-    ){
-      userService.userData.subscribe(x => {
+    constructor(){
+      this.userService.userData$.subscribe(x => {
         if(x._id){
           this.userService.getUsersList()
         } else {
@@ -59,7 +58,7 @@ export class CluMapViewComponent{
   }
 
   public getUserAlert(){
-    const user = this.userService.userData.value;
+    const user = this.userService.userData$.value;
     const ahora: Date = new Date();
     if(user.updatedAt){
       const diffMs: number = ahora.getTime() - new Date(user.updatedAt).getTime();

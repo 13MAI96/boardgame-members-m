@@ -1,10 +1,10 @@
 <span class="user-alert">{{getUserAlert()}}</span>
-@if(userService.userData | async; as user){
+@if(userService.userData$ | async; as user){
   <mgl-map class="mapa" #mapa
       [style]="'mapbox://styles/mapbox/streets-v12'" [zoom]="9" [center]="{ lat: user.lat ?? 0, lng: user.lng ?? 0 }"> 
     <mgl-control mglNavigation />
     <mgl-control mglGeolocate />
-      @for(user of userService.users | async; track user){
+      @for(user of userService.users$ | async; track user){
         @if(mapa){
           <mgl-marker
                       [lngLat]="[user.lng ?? 0, user.lat ?? 0]"

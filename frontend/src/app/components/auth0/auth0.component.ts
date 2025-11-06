@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DOCUMENT, Inject } from '@angular/core';
+import { Component, DOCUMENT, inject, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 // Import the AuthService type from the SDK
@@ -15,9 +15,9 @@ import { AuthService } from '@auth0/auth0-angular';
   ]
 })
 export class AuthButtonComponent {
+  public auth: AuthService = inject(AuthService)
     
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    public auth: AuthService
 ) {}
 }

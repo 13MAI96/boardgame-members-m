@@ -12,7 +12,7 @@ import { AuthService, LogoutOptions } from '@auth0/auth0-angular';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, mergeMap, tap } from 'rxjs/operators';
 import { BackendActionResponse } from './response.model';
-import { UserService } from '../services/user.service';
+import { UserService } from '../services/user/user.service';
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (
         const authReq = req.clone({
           setHeaders: {
             Authorization: `Bearer ${token}`,
-            user: `${userService.userData.value._id}`
+            user: `${userService.userData$.value._id}`
           },
         });
         return next(authReq).pipe(

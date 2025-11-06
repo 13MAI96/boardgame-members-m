@@ -1,5 +1,5 @@
 <div class="container">
-  @if(userService.userData | async; as user){
+  @if(userService.userData$ | async; as user){
     <form [formGroup]="form" class="form">
       <mat-label for="name">Nombre</mat-label>
       <input matInput id="name" type="text" placeholder="Nombre" formControlName="name">

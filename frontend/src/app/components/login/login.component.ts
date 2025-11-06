@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
@@ -25,13 +25,10 @@ const modulesToImport = [
 })
 export class LoginComponent{
   public loading: boolean = true;
+  public router: Router = inject(Router)
+  public authService: AuthService = inject(AuthService)
 
-  constructor(
-    private router: Router,
-    public authService: AuthService
-  ){
-
-  }
+  constructor(){}
 
   ngOnInit(){
     this.authService.isAuthenticated$.subscribe(x => {

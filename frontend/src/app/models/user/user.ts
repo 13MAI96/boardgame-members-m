@@ -34,13 +34,13 @@ export class FullUser extends User{
     }
 
     updateFromApi(user: User){
-        this.name = user.name;
-        this.role = user.role;
-        this.lat = user.lat;
-        this.lng = user.lng;
-        this.telegram_user = user.telegram_user;
-        this._id = user._id;
-        this.updatedAt = user.updatedAt
+        this.name = user.name ?? this.name;
+        this.role = user.role ?? this.role;
+        this.lat = user.lat ?? this.lat;
+        this.lng = user.lng ?? this.lng;
+        this.telegram_user = user.telegram_user ?? this.telegram_user;
+        this._id = user._id ?? this._id;
+        this.updatedAt = user.updatedAt ?? this.updatedAt
         return this;
     }
 
